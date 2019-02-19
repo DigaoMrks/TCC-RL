@@ -20,6 +20,7 @@ from keras import backend as K
 ENV_NAME = 'BreakoutDeterministic-v4' # Nome do jogo
 ACTION = 4 # Quantidade de possíveis ações no jogo. 'do nothing', também é uma ação
                 # Deterministic-v4 version use 4 actions (Procurei no artigo e realmente usa 4 ações mas não sei o porque, <, >, 'do nothing')
+                #Segundo a biblioteca GYM: https://github.com/openai/gym/wiki/Table-of-environments
 RENDER = False # Renderizar ou não o treinamento
 LOAD_SAVED_MODEL = False # Load no modelo já treinado para continuar o treinamento
 
@@ -115,13 +116,13 @@ class DQNAgent:
 #--------------------------------------------------------------------------------------------------------
 
     # Cria uma rede neural igual ao do artigo (Human-level control through deep reinforcement learning)
-	# A rede criada tem como entrada a 'imagem' 84x84x4 (84 largura x 84 altura x 4 frames)
+    # A rede criada tem como entrada a 'imagem' 84x84x4 (84 largura x 84 altura x 4 frames)
     # De acordo com o artigo:
-	# The first hidden layer convolves 32 filters of 8x8 with stride 4 with the input image and applies a rectifier nonlinearity.
-	# The second hidden layer convolves 64 filters of 4x4 with stride 2, again followed by a rectifier nonlinearity.
-	# This is followed by a third convolutional layer that convolves 64 filters of 3x3 with stride 1 followed by a rectifier.
-	# The final hidden layer is fully-connected and consists of 512 rectifier units.
-	# The output layer is a fully-connected linear layer with a single output for each valid action.
+    # The first hidden layer convolves 32 filters of 8x8 with stride 4 with the input image and applies a rectifier nonlinearity.
+    # The second hidden layer convolves 64 filters of 4x4 with stride 2, again followed by a rectifier nonlinearity.
+    # This is followed by a third convolutional layer that convolves 64 filters of 3x3 with stride 1 followed by a rectifier.
+    # The final hidden layer is fully-connected and consists of 512 rectifier units.
+    # The output layer is a fully-connected linear layer with a single output for each valid action.
 
     def build_model(self):
         model = Sequential()
@@ -192,7 +193,7 @@ class DQNAgent:
 
 #--------------------------------------------------------------------------------------------------------
 
-	#Sumário de operadores do Tensorboard
+    #Sumário de operadores do Tensorboard
 
     def setup_summary(self):
         episode_total_reward = tf.Variable(0.)
@@ -214,7 +215,7 @@ class DQNAgent:
 #--------------------------------------------------------------------------------------------------------
 
     # Transforma a imagem de entrada na rede neural de 210*160*3(colorido) -> 84*84(mono)
-	# Isso reduz o tamanho do replay de memória para agilizar o processo
+    # Isso reduz o tamanho do replay de memória para agilizar o processo
 
 def pre_processing(observe):
     processed_observe = np.uint8(resize(rgb2gray(observe), (84, 84), mode='constant') * 255)
@@ -226,14 +227,15 @@ def pre_processing(observe):
 if __name__ == "__main__":
     env = gym.make(ENV_NAME)
     agent = DQNAgent(action_size=ACTION)
+    frames=0
 
     time_start = datetime.datetime.now()
 
-	# Salva em um csv todos os dados do treinamento (segurança pois estava com problema para usar o tensorboard)
+    # Salva em um csv todos os dados do treinamento (segurança pois estava com problema para usar o tensorboard)
     with open (b"./data_csv/training_data.csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(['Date/Time Start',time_start])
-        writer.writerow(['Episode','Score','Mem Lenght','Epsilon','Global Step','Average_q','Average_Loss'])
+        writer.writerow(['Episode','Score','Mem Lenght','Epsilon','Global Step','Average_q','Average_Loss','Frames'])
 
         scores, episodes, global_step = [], [], 0
 
@@ -244,12 +246,12 @@ if __name__ == "__main__":
             step, score, start_life = 0, 0, 5
             observe = env.reset()
 
-            # this is one of DeepMind's idea.
-            # just do nothing at the start of episode to avoid sub-optimal
+            #Para não ocorrer sub-optimal, a DeepMind propõe:
+            #Durante o inicio de um episódio, faça uma ação 'do nothing'
             for _ in range(random.randint(1, agent.no_op_steps)): observe, _, _, _ = env.step(1)
 
-            # At start of episode, there is no preceding frame
-            # So just copy initial states to make history
+            # No inicio do episódio, não existe frame anterior
+            # Então, é copiado o estado inicial para fazer o histórico
             state = pre_processing(observe)
             history = np.stack((state, state, state, state), axis=2)
             history = np.reshape([history], (1, 84, 84, 4))
@@ -259,6 +261,7 @@ if __name__ == "__main__":
                     env.render()
                 global_step += 1
                 step += 1
+                frames+=1
 
                 # get action for the current history and go one step in environment
                 action = agent.get_action(history)
@@ -275,14 +278,14 @@ if __name__ == "__main__":
 
                 agent.avg_q_max += np.amax(agent.model.predict(np.float32(history / 255.))[0])
 
-                # if the agent missed ball, agent is dead --> episode is not over
+                # Se o agente erre a bola, o agente "morre" --> MAS o episodio não terminou
                 if start_life > info['ale.lives']:
                     dead = True
                     start_life = info['ale.lives']
 
                 reward = np.clip(reward, -1., 1.)
 
-                # save the sample <s, a, r, s'> to the replay memory
+                # Salva os valores de <s, a, r, s'> para o replay memory
                 agent.replay_memory(history, action, reward, next_history, dead)
                 # every some time interval, train model
                 agent.train_replay()
@@ -291,13 +294,13 @@ if __name__ == "__main__":
 
                 score += reward
 
-                # if agent is dead, then reset the history
+                # Se o agente morrer, da um reset na história
                 if dead:
                     dead = False
                 else:
                     history = next_history
 
-                # if done, plot the score over episodes
+                # Caso o Episódio acabou, plota os dados do episódio na tela e no csv
                 if done:
                     if global_step > agent.train_start:
                         stats = [score, agent.avg_q_max / float(step), step, agent.avg_loss /     float(step)]
@@ -308,19 +311,19 @@ if __name__ == "__main__":
                         summary_str = agent.sess.run(agent.summary_op)
                         agent.summary_writer.add_summary(summary_str, e + 1)
 
-    				# Mostra na tela todos os dados
+                    # Mostra na tela todos os dados
                     print("episode:", e, "  score:", score, "  memory length:",
                           len(agent.memory), "  epsilon:", agent.epsilon,
                           "  global_step:", global_step, "  average_q:",
                           agent.avg_q_max / float(step), "  average loss:",
-                          agent.avg_loss / float(step), "e%", (e % 1000))
+                          agent.avg_loss / float(step), "e%", (e % 1000), "Frames:", frames)
 
-			        # Salva em um csv todos os dados do treinamento (segurança pois estava com problema para usar o tensorboard)
-                    writer.writerow([e,score,len(agent.memory),agent.epsilon,global_step,agent.avg_q_max / float(step),agent.avg_loss / float(step)])
+                    # Salva em um csv todos os dados do treinamento (segurança pois estava com problema para usar o tensorboard)
+                    writer.writerow([e,score,len(agent.memory),agent.epsilon,global_step,agent.avg_q_max / float(step),agent.avg_loss / float(step), frames])
 
                     agent.avg_q_max, agent.avg_loss = 0, 0
 
-
+            # Salva o modelo de 1000 em 1000 iterações (AVALIAR SE É MELHOR SALVAR POR EPOCA OU POR FRAME)
             if e % 1000 == 0:
                 agent.model.save_weights("./saved_model/breakout_dqn.h5")
                 print("Model Saved")
