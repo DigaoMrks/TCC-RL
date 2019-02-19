@@ -63,9 +63,9 @@ def pre_processing(observe):
 if __name__ == "__main__":
     env = gym.make('SpaceInvadersDeterministic-v4')
     agent = TestAgent(action_size=6)
-    agent.load_model("./saved_model/breakout_dqn.h5")
+    agent.load_model("./saved_model/spaceinvaders_dqn.h5")
 
-    with open (b"./data_csv/play_game_data.csv","w") as csv_file:
+    with open (b"./data_csv/spaceinvaders_play_game_data.csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(["Episode:","Score:"])
 

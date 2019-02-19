@@ -83,10 +83,10 @@ class DQNAgent:
 
         self.avg_q_max, self.avg_loss = 0, 0
         self.summary_placeholders, self.update_ops, self.summary_op = self.setup_summary()
-        self.summary_writer = tf.summary.FileWriter('summary/breakout_dqn', self.sess.graph)
+        self.summary_writer = tf.summary.FileWriter('summary/spaceinvaders_dqn', self.sess.graph)
         self.sess.run(tf.global_variables_initializer())
 
-        if self.load_model: self.model.load_weights("./saved_model/breakout_dqn.h5")
+        if self.load_model: self.model.load_weights("./saved_model/spaceinvaders_dqn.h5")
 
 
 #--------------------------------------------------------------------------------------------------------
@@ -231,7 +231,7 @@ if __name__ == "__main__":
     time_start = datetime.datetime.now()
 
 	# Salva em um csv todos os dados do treinamento (segurança pois estava com problema para usar o tensorboard)
-    with open (b"./data_csv/training_data.csv","w") as csv_file:
+    with open (b"./data_csv/spaceinvaders_training_data.csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(['Date/Time Start',time_start])
         writer.writerow(['Episode','Score','Mem Lenght','Epsilon','Global Step','Average_q','Average_Loss'])
@@ -323,5 +323,5 @@ if __name__ == "__main__":
 
 
             if e % 1000 == 0:
-                agent.model.save_weights("./saved_model/breakout_dqn.h5")
+                agent.model.save_weights("./saved_model/spaceinvaders_dqn.h5")
                 print("Model Saved")

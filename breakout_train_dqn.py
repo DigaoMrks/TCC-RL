@@ -88,11 +88,10 @@ class DQNAgent:
 
         if self.load_model: self.model.load_weights("./saved_model/breakout_dqn.h5")
 
-
 #--------------------------------------------------------------------------------------------------------
     # if the error is in [-1, 1], then the cost is quadratic to the error
     # But outside the interval, the cost is linear to the error
-	#
+
     def optimizer(self):
         a = K.placeholder(shape=(None,), dtype='int32')
         y = K.placeholder(shape=(None,), dtype='float32')
@@ -116,7 +115,7 @@ class DQNAgent:
 #--------------------------------------------------------------------------------------------------------
 
     # Cria uma rede neural igual ao do artigo (Human-level control through deep reinforcement learning)
-	# A rede criada tem como entrada a imagem 84x84x4 (84 largura x 84 altura x 4 frames)
+	# A rede criada tem como entrada a 'imagem' 84x84x4 (84 largura x 84 altura x 4 frames)
     # De acordo com o artigo:
 	# The first hidden layer convolves 32 filters of 8x8 with stride 4 with the input image and applies a rectifier nonlinearity.
 	# The second hidden layer convolves 64 filters of 4x4 with stride 2, again followed by a rectifier nonlinearity.
