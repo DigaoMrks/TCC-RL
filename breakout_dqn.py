@@ -14,6 +14,8 @@ from keras.layers import Dense, Flatten
 from keras.layers.convolutional import Conv2D
 from keras import backend as K
 
+#--------------------------------------------------------------------------------------------------------
+
 # GAME SETTINGS
 ENV_NAME = 'BreakoutDeterministic-v4' # Nome do jogo
 ACTION = 4 # Quantidade de possíveis ações no jogo. 'do nothing', também é uma ação
@@ -42,15 +44,17 @@ EPISODES = 50000 #Número de episódios/epocas(epoch)
 LEARNING_RATE = 0.00025 # Learing rate usado pelo RMSProp (Não sei explicar)
 MIN_GRAD = 0.01  # Constant added to the squared gradient in the denominator of the RMSProp update
 
+#--------------------------------------------------------------------------------------------------------
+
 class DQNAgent:
     def __init__(self, action_size):
         self.render = RENDER
         self.load_model = LOAD_SAVED_MODEL
-		
+
         # Environment Settings
         self.state_size = (FRAME_WIDTH, FRAME_HEIGHT, STATE_LENGTH)
         self.action_size = action_size # Número de ações possíveis no jogo, + 'do nothing' (Breakout = <, >, 'do nothing' = 3)
-		
+
         # Epsilon Parameters
         self.epsilon = 1.
         self.epsilon_decay_step = (INITIAL_EPSILON - FINAL_EPSILON) / EXPLORATION_STEPS
@@ -60,7 +64,7 @@ class DQNAgent:
         self.update_target_rate = TARGET_UPDATE_INTERVAL
         self.memory = deque(maxlen=NUM_REPLAY_MEMORY)
         self.no_op_steps = NO_OP_STEPS
-		
+
         # Build Model
         self.model = self.build_model()
         self.target_model = self.build_model()
@@ -78,7 +82,7 @@ class DQNAgent:
 
         if self.load_model: self.model.load_weights("./saved_model/breakout_dqn.h5")
 
-		
+
 #--------------------------------------------------------------------------------------------------------
     # if the error is in [-1, 1], then the cost is quadratic to the error
     # But outside the interval, the cost is linear to the error
@@ -103,7 +107,7 @@ class DQNAgent:
 
         return train
 
-#--------------------------------------------------------------------------------------------------------		
+#--------------------------------------------------------------------------------------------------------
 
     # Cria uma rede neural igual ao do artigo (Human-level control through deep reinforcement learning)
 	# A rede criada tem como entrada a imagem 84x84x4 (84 largura x 84 altura x 4 frames)
@@ -113,10 +117,10 @@ class DQNAgent:
 	# This is followed by a third convolutional layer that convolves 64 filters of 3x3 with stride 1 followed by a rectifier.
 	# The final hidden layer is fully-connected and consists of 512 rectifier units.
 	# The output layer is a fully-connected linear layer with a single output for each valid action.
-	
+
     def build_model(self):
         model = Sequential()
-		
+
         model.add(Conv2D(32, (8, 8), strides=(4, 4), activation='relu', input_shape=self.state_size))
         model.add(Conv2D(64, (4, 4), strides=(2, 2), activation='relu'))
         model.add(Conv2D(64, (3, 3), strides=(1, 1), activation='relu'))
@@ -127,7 +131,7 @@ class DQNAgent:
         return model
 
 #--------------------------------------------------------------------------------------------------------
-		
+
     # after some time interval update the target model to be same with model
     def update_target_model(self):
         self.target_model.set_weights(self.model.get_weights())
@@ -184,7 +188,7 @@ class DQNAgent:
 #--------------------------------------------------------------------------------------------------------
 
 	#Sumário de operadores do Tensorboard
-	
+
     def setup_summary(self):
         episode_total_reward = tf.Variable(0.)
         episode_avg_max_q = tf.Variable(0.)
@@ -204,16 +208,16 @@ class DQNAgent:
 
 #--------------------------------------------------------------------------------------------------------
 
-    # Transforma a imagem de entrada na rede neural de 210*160*3(colorido) -> 84*84(mono)  
+    # Transforma a imagem de entrada na rede neural de 210*160*3(colorido) -> 84*84(mono)
 	# Isso reduz o tamanho do replay de memória para agilizar o processo
-	
+
 def pre_processing(observe):
     processed_observe = np.uint8(resize(rgb2gray(observe), (84, 84), mode='constant') * 255)
     return processed_observe
 
 #--------------------------------------------------------------------------------------------------------
-	
-	
+
+
 if __name__ == "__main__":
     env = gym.make(ENV_NAME)
     agent = DQNAgent(action_size=ACTION)
@@ -225,7 +229,7 @@ if __name__ == "__main__":
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(['Date/Time Start',time_start])
         writer.writerow(['Episode','Score','Mem Lenght','Epsilon','Global Step','Average_q','Average_Loss'])
-	
+
         scores, episodes, global_step = [], [], 0
 
         for e in range(EPISODES):
@@ -263,31 +267,31 @@ if __name__ == "__main__":
                 next_state = pre_processing(observe)
                 next_state = np.reshape([next_state], (1, 84, 84, 1))
                 next_history = np.append(next_state, history[:, :, :, :3], axis=3)
- 
+
                 agent.avg_q_max += np.amax(agent.model.predict(np.float32(history / 255.))[0])
 
                 # if the agent missed ball, agent is dead --> episode is not over
                 if start_life > info['ale.lives']:
                     dead = True
                     start_life = info['ale.lives']
-    
+
                 reward = np.clip(reward, -1., 1.)
-    
+
                 # save the sample <s, a, r, s'> to the replay memory
                 agent.replay_memory(history, action, reward, next_history, dead)
                 # every some time interval, train model
                 agent.train_replay()
                 # update the target model with model
                 if global_step % agent.update_target_rate == 0: agent.update_target_model()
-    
+
                 score += reward
-    
+
                 # if agent is dead, then reset the history
                 if dead:
                     dead = False
                 else:
                     history = next_history
-  
+
                 # if done, plot the score over episodes
                 if done:
                     if global_step > agent.train_start:
@@ -298,20 +302,20 @@ if __name__ == "__main__":
                             })
                         summary_str = agent.sess.run(agent.summary_op)
                         agent.summary_writer.add_summary(summary_str, e + 1)
-    
+
     				# Mostra na tela todos os dados
                     print("episode:", e, "  score:", score, "  memory length:",
                           len(agent.memory), "  epsilon:", agent.epsilon,
                           "  global_step:", global_step, "  average_q:",
                           agent.avg_q_max / float(step), "  average loss:",
                           agent.avg_loss / float(step), "e%", (e % 1000))
- 
+
 			        # Salva em um csv todos os dados do treinamento (segurança pois estava com problema para usar o tensorboard)
                     writer.writerow([e,score,len(agent.memory),agent.epsilon,global_step,agent.avg_q_max / float(step),agent.avg_loss / float(step)])
-				
+
                     agent.avg_q_max, agent.avg_loss = 0, 0
 
-                
+
             if e % 1000 == 0:
                 agent.model.save_weights("./saved_model/breakout_dqn.h5")
                 print("Model Saved")

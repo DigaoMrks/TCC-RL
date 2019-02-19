@@ -10,8 +10,11 @@ from keras.layers import Dense, Flatten
 from keras.layers.convolutional import Conv2D
 from keras import backend as K
 
+#--------------------------------------------------------------------------------------------------------
+
 EPISODES = 50000
 
+#--------------------------------------------------------------------------------------------------------
 
 class TestAgent:
     def __init__(self, action_size):
@@ -55,6 +58,7 @@ def pre_processing(observe):
         resize(rgb2gray(observe), (84, 84), mode='constant') * 255)
     return processed_observe
 
+#--------------------------------------------------------------------------------------------------------
 
 if __name__ == "__main__":
     env = gym.make('BreakoutDeterministic-v4')
@@ -64,12 +68,12 @@ if __name__ == "__main__":
     with open (b"./data_csv/play_game_data.csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(["Episode:","Score:"])
-        
+
 
         for e in range(EPISODES):
             done = False
             dead = False
-           
+
             step, score, start_life = 0, 0, 5
             observe = env.reset()
 
@@ -116,4 +120,3 @@ if __name__ == "__main__":
                 if done:
                     print("Episode:", e, "  Score:", score)
                     writer.writerow([e,score])
-
