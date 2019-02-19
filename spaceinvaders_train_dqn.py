@@ -322,6 +322,6 @@ if __name__ == "__main__":
                     agent.avg_q_max, agent.avg_loss = 0, 0
 
 
-            if e % 1000 == 0:
+            if e % 100 == 0:
                 agent.model.save_weights("./saved_model/spaceinvaders_dqn.h5")
                 print("Model Saved")
