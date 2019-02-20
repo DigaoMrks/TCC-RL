@@ -84,10 +84,10 @@ class DQNAgent:
 
         self.avg_q_max, self.avg_loss = 0, 0
         self.summary_placeholders, self.update_ops, self.summary_op = self.setup_summary()
-        self.summary_writer = tf.summary.FileWriter('summary/breakout_dqn', self.sess.graph)
+        self.summary_writer = tf.summary.FileWriter('summary/breakout_dqn/breakout_dqn', self.sess.graph)
         self.sess.run(tf.global_variables_initializer())
 
-        if self.load_model: self.model.load_weights("./saved_model/breakout_dqn.h5")
+        if self.load_model: self.model.load_weights("./saved_model/breakout_dqn/breakout_dqn.h5")
 
 #--------------------------------------------------------------------------------------------------------
     # if the error is in [-1, 1], then the cost is quadratic to the error
@@ -232,7 +232,7 @@ if __name__ == "__main__":
     time_start = datetime.datetime.now()
 
     # Salva em um csv todos os dados do treinamento (segurança pois estava com problema para usar o tensorboard)
-    with open (b"./data_csv/training_data.csv","w") as csv_file:
+    with open (b"./data_csv/breakout_dqn/breakout_dqn_training_data.csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(['Date/Time Start',time_start])
         writer.writerow(['Episode','Score','Mem Lenght','Epsilon','Global Step','Average_q','Average_Loss','Frames'])
@@ -325,5 +325,5 @@ if __name__ == "__main__":
 
             # Salva o modelo de 1000 em 1000 iterações (AVALIAR SE É MELHOR SALVAR POR EPOCA OU POR FRAME)
             if e % 1000 == 0:
-                agent.model.save_weights("./saved_model/breakout_dqn.h5")
-                print("Model Saved")
+                agent.model.save_weights("./saved_model/breakout_dqn/breakout_dqn.h5")
+                print("MODEL SAVED in: saved_model/breakout_dqn/breakout_dqn.h5")
