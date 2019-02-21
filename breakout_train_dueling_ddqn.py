@@ -8,9 +8,9 @@ import datetime
 from collections import deque
 from skimage.color import rgb2gray
 from skimage.transform import resize
-from keras.models import Sequential
+from keras.models import Model
 from keras.optimizers import RMSprop
-from keras.layers import Dense, Flatten
+from keras.layers import Input, Dense, Flatten, Lambda, merge
 from keras.layers.convolutional import Conv2D
 from keras import backend as K
 
@@ -53,7 +53,7 @@ MIN_GRAD = 0.01  # Constant added to the squared gradient in the denominator of 
 
 #--------------------------------------------------------------------------------------------------------
 
-class DuelingDDQNAgent:
+class DueDDQNAgent:
     def __init__(self, action_size):
         self.render = RENDER
         self.load_model = LOAD_SAVED_MODEL
@@ -244,7 +244,7 @@ def pre_processing(observe):
 
 if __name__ == "__main__":
     env = gym.make(ENV_NAME)
-    agent = DuelingDDQNAgent(action_size=ACTION)
+    agent = DueDDQNAgent(action_size=ACTION)
     frames=0
 
     time_start = datetime.datetime.now()
