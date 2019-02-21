@@ -63,9 +63,9 @@ def pre_processing(observe):
 if __name__ == "__main__":
     env = gym.make('BreakoutDeterministic-v4')
     agent = TestAgent(action_size=4)
-    agent.load_model("./saved_model/breakout_dqn.h5")
+    agent.load_model("./saved_model/breakout_dqn/breakout_dqn.h5")
 
-    with open (b"./data_csv/breakout_play_game_data.csv","w") as csv_file:
+    with open (b"./data_csv/breakout_dqn/breakout_dqn_play_game_data.csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(["Episode:","Score:"])
 

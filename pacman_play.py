@@ -65,7 +65,7 @@ if __name__ == "__main__":
     agent = TestAgent(action_size=9)
     agent.load_model("./saved_model/pacman_dqn/pacman_dqn.h5")
 
-    with open (b"./data_csv/pacman_dqn_play_game_data.csv","w") as csv_file:
+    with open (b"./data_csv/pacman_dqn/pacman_dqn_play_game_data.csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(["Episode:","Score:"])
 
