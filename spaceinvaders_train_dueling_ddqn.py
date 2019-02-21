@@ -346,4 +346,6 @@ if __name__ == "__main__":
                 agent.model.save_weights("./saved_model/spaceinvaders_dueling_ddqn/spaceinvaders_dueling_ddqn_padrao_1k.h5")
                 print("MODEL SAVED in: /saved_model/spaceinvaders_dueling_ddqn/spaceinvaders_dueling_ddqn_padrao_1k.h5")
 
-        writer.writerow(['Date/Time End',time])
+        time_end = datetime.datetime.now()
+        writer.writerow(['Date/Time End',time_end])
+    csv_file.close()
