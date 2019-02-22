@@ -41,7 +41,7 @@ EXPLORATION_STEPS = 1000000 # Número de passos que o valor inicial de epsilon �
 #------------------
 
 # Training Parameters
-EPISODES = 1000 #Número de episódios/epocas(epoch)
+EPISODES = 1001 #Número de episódios/epocas(epoch)
 BATCH_SIZE = 32 # Minimo Batch size
 TARGET_UPDATE_INTERVAL = 10000  # Frequência na qual a rede é atualizada
 GAMMA = 0.99 # Valor do Discount factor

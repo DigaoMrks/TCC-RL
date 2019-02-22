@@ -41,7 +41,7 @@ EXPLORATION_STEPS = 1000000 # Número de passos que o valor inicial de epsilon �
 #------------------
 
 # Training Parameters
-EPISODES = 1000 #Número de episódios/epocas(epoch)
+EPISODES = 1001 #Número de episódios/epocas(epoch)
 BATCH_SIZE = 32 # Minimo Batch size
 TARGET_UPDATE_INTERVAL = 10000  # Frequência na qual a rede é atualizada
 GAMMA = 0.99 # Valor do Discount factor
@@ -180,15 +180,14 @@ class DDQNAgent:
 
         # like Q Learning, get maximum Q value at s'
         # But from target model
-        for i in range(self.batch_size):
+        for i in range(BATCH_SIZE):
             if dead[i]:
                 target[i] = reward[i]
             else:
                 # the key point of Double DQN
                 # selection of action is from model
                 # update is from target model
-                target[i] = reward[i] + self.discount_factor * \
-                                        target_value[i][np.argmax(value[i])]
+                target[i] = reward[i] + GAMMA * target_value[i][np.argmax(value[i])]
 
         loss = self.optimizer([history, action, target])
         self.avg_loss += loss[0]
