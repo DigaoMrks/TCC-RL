@@ -41,7 +41,7 @@ EXPLORATION_STEPS = 1000000 # Número de passos que o valor inicial de epsilon �
 #------------------
 
 # Training Parameters
-EPISODES = 1001 #Número de episódios/epocas(epoch)
+EPISODES = 2001 #Número de episódios/epocas(epoch)
 BATCH_SIZE = 32 # Minimo Batch size
 TARGET_UPDATE_INTERVAL = 10000  # Frequência na qual a rede é atualizada
 GAMMA = 0.99 # Valor do Discount factor
@@ -84,7 +84,7 @@ class DDQNAgent:
 
         self.avg_q_max, self.avg_loss = 0, 0
         self.summary_placeholders, self.update_ops, self.summary_op = self.setup_summary()
-        self.summary_writer = tf.summary.FileWriter('summary/pacman_ddqn/pacman_ddqn_padrao_1k', self.sess.graph)
+        self.summary_writer = tf.summary.FileWriter('summary/pacman_ddqn/pacman_ddqn_padrao_2k', self.sess.graph)
         self.sess.run(tf.global_variables_initializer())
 
         if self.load_model: self.model.load_weights("./saved_model/pacman_ddqn/pacman_ddqn_padrao_1k.h5")

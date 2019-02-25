@@ -41,7 +41,7 @@ EXPLORATION_STEPS = 1000000 # Número de passos que o valor inicial de epsilon �
 #------------------
 
 # Training Parameters
-EPISODES = 1001 #Número de episódios/epocas(epoch)
+EPISODES = 2001 #Número de episódios/epocas(epoch)
 BATCH_SIZE = 32 # Minimo Batch size
 TARGET_UPDATE_INTERVAL = 10000  # Frequência na qual a rede é atualizada
 GAMMA = 0.99 # Valor do Discount factor
@@ -84,10 +84,10 @@ class DDQNAgent:
 
         self.avg_q_max, self.avg_loss = 0, 0
         self.summary_placeholders, self.update_ops, self.summary_op = self.setup_summary()
-        self.summary_writer = tf.summary.FileWriter('summary/breakout_ddqn/breakout_ddqn_padrao_1k', self.sess.graph)
+        self.summary_writer = tf.summary.FileWriter('summary/breakout_ddqn/breakout_ddqn_padrao_2k', self.sess.graph)
         self.sess.run(tf.global_variables_initializer())
 
-        if self.load_model: self.model.load_weights("./saved_model/breakout_ddqn/breakout_ddqn_padrao_1k.h5")
+        if self.load_model: self.model.load_weights("./saved_model/breakout_ddqn/breakout_ddqn_padrao_2k.h5")
 
 #--------------------------------------------------------------------------------------------------------
     # if the error is in [-1, 1], then the cost is quadratic to the error
@@ -233,7 +233,7 @@ if __name__ == "__main__":
     time = datetime.datetime.now()
 
     # Salva em um csv todos os dados do treinamento (segurança pois estava com problema para usar o tensorboard)
-    with open (b"./data_csv/breakout_ddqn/breakout_ddqn_padrao_1k.csv","w") as csv_file:
+    with open (b"./data_csv/breakout_ddqn/breakout_ddqn_padrao_2k.csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(['Date/Time Start',time])
         writer.writerow(['Episode','Score','Mem Lenght','Epsilon','Global Step','Average_q','Average_Loss','Frames'])
@@ -326,8 +326,8 @@ if __name__ == "__main__":
 
             # Salva o modelo de 1000 em 1000 iterações (AVALIAR SE É MELHOR SALVAR POR EPOCA OU POR FRAME)
             if e % 1000 == 0:
-                agent.model.save_weights("./saved_model/breakout_ddqn/breakout_ddqn_padrao_1k.h5")
-                print("MODEL SAVED in: /saved_model/breakout_ddqn/breakout_ddqn_padrao_1k.h5")
+                agent.model.save_weights("./saved_model/breakout_ddqn/breakout_ddqn_padrao_2k.h5")
+                print("MODEL SAVED in: /saved_model/breakout_ddqn/breakout_ddqn_padrao_2k.h5")
 
         time_end = datetime.datetime.now()
         writer.writerow(['Date/Time End',time_end])
