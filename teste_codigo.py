@@ -16,6 +16,11 @@ from keras import backend as K
 
 #--------------------------------------------------------------------------------------------------------
 
+# Nome
+NAME = 'Teste_DQN'
+
+#--------------------------------------------------------------------------------------------------------
+
 # GAME SETTINGS
 ENV_NAME = 'BreakoutDeterministic-v4' # Nome do jogo
 ACTION = 4 # Quantidade de possíveis ações no jogo. 'do nothing', também é uma ação
@@ -84,10 +89,12 @@ class DQNAgent:
 
         self.avg_q_max, self.avg_loss = 0, 0
         self.summary_placeholders, self.update_ops, self.summary_op = self.setup_summary()
-        self.summary_writer = tf.summary.FileWriter('summary/breakout_dqn/breakout_dqn_padrao_2k', self.sess.graph)
+        self.summary_writer = tf.summary.FileWriter('trained/'+NAME+'/summary/'+NAME, self.sess.graph)
+        #self.summary_writer = tf.summary.FileWriter('summary/breakout_dqn/breakout_dqn_padrao_2k', self.sess.graph)
         self.sess.run(tf.global_variables_initializer())
 
-        if self.load_model: self.model.load_weights("./saved_model/breakout_dqn/breakout_dqn_padrao_2k.h5")
+        if self.load_model: self.model.load_weights("./trained/"+NAME+"/saved_model/"+NAME+".h5")
+        #if self.load_model: self.model.load_weights("./saved_model/breakout_dqn/breakout_dqn_padrao_2k.h5")
 
 #--------------------------------------------------------------------------------------------------------
     # if the error is in [-1, 1], then the cost is quadratic to the error
@@ -232,7 +239,8 @@ if __name__ == "__main__":
     time = datetime.datetime.now()
 
     # Salva em um csv todos os dados do treinamento (segurança pois estava com problema para usar o tensorboard)
-    with open (b"./data_csv/breakout_dqn/breakout_dqn_padrao_2k.csv","w") as csv_file:
+    with open (b"./trained/"+NAME+"/data_csv/"+NAME+".csv","w") as csv_file:
+    #with open (b"./data_csv/breakout_dqn/breakout_dqn_padrao_2k.csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(['Date/Time Start',time])
         writer.writerow(['Episode','Score','Mem Lenght','Epsilon','Global Step','Average_q','Average_Loss','Frames'])
@@ -325,8 +333,10 @@ if __name__ == "__main__":
 
             # Salva o modelo de 1000 em 1000 iterações (AVALIAR SE É MELHOR SALVAR POR EPOCA OU POR FRAME)
             if e % 1000 == 0:
-                agent.model.save_weights("./saved_model/breakout_dqn/breakout_dqn_padrao_2k.h5")
-                print("MODEL SAVED in: saved_model/breakout_dqn/breakout_dqn_padrao_2k.h5")
+                agent.model.save_weights("./trained/"+NAME+"/saved_model/"+NAME+".h5")
+                print("MODEL SAVED in: "+"./trained/"+NAME+"/saved_model/"+NAME+".h5")
+                #agent.model.save_weights("./saved_model/breakout_dqn/breakout_dqn_padrao_2k.h5")
+                #print("MODEL SAVED in: saved_model/breakout_dqn/breakout_dqn_padrao_2k.h5")
 
         time_end = datetime.datetime.now()
         writer.writerow(['Date/Time End',time_end])
