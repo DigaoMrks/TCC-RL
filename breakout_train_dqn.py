@@ -255,6 +255,8 @@ if __name__ == "__main__":
     #with open (b"./data_csv/breakout_dqn/breakout_dqn_padrao_2k.csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(['Date/Time Start',time])
+        writer.writerow(['EPISODES','BATCH_SIZE','GAMMA','NO_OP_STEPS','LEARNING_RATE','MIN_GRAD'])
+        writer.writerow([EPISODES,BATCH_SIZE,GAMMA,NO_OP_STEPS,LEARNING_RATE,MIN_GRAD])
         writer.writerow(['Episode','Score','Mem Lenght','Epsilon','Global Step','Average_q','Average_Loss','Frames'])
 
         scores, episodes, global_step = [], [], 0
