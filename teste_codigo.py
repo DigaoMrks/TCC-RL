@@ -10,7 +10,7 @@ from collections import deque
 from skimage.color import rgb2gray
 from skimage.transform import resize
 from keras.models import Sequential
-from keras.optimizers import RMSprop
+from keras.optimizers import RMSprop,Adam
 from keras.layers import Dense, Flatten
 from keras.layers.convolutional import Conv2D
 from keras import backend as K
@@ -116,7 +116,8 @@ class DQNAgent:
         linear_part = error - quadratic_part
         loss = K.mean(0.5 * K.square(quadratic_part) + linear_part)
 
-        optimizer = RMSprop(lr=LEARNING_RATE, epsilon=MIN_GRAD)
+        optimizer = Adam(lr=LEARNING_RATE,epsilon=MIN_GRAD)
+        #optimizer = RMSprop(lr=LEARNING_RATE, epsilon=MIN_GRAD)
         updates = optimizer.get_updates(self.model.trainable_weights, [], loss)
         train = K.function([self.model.input, a, y], [loss], updates=updates)
 
