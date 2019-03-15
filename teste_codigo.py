@@ -4,6 +4,7 @@ import numpy as np
 import tensorflow as tf
 import csv
 import datetime
+import os
 
 from collections import deque
 from skimage.color import rgb2gray
@@ -18,7 +19,7 @@ from keras import backend as K
 
 # Nome
 MODEL = '_DQN'
-NAME = 'Teste'+MODEL
+NAME = 'Primeira_tentativa'+MODEL
 
 #--------------------------------------------------------------------------------------------------------
 
@@ -90,7 +91,7 @@ class DQNAgent:
 
         self.avg_q_max, self.avg_loss = 0, 0
         self.summary_placeholders, self.update_ops, self.summary_op = self.setup_summary()
-        self.summary_writer = tf.summary.FileWriter('trained/'+NAME+'/summary/'+NAME, self.sess.graph)
+        self.summary_writer = tf.summary.FileWriter('trained/'+NAME+'/summary/', self.sess.graph)
         #self.summary_writer = tf.summary.FileWriter('summary/breakout_dqn/breakout_dqn_padrao_2k', self.sess.graph)
         self.sess.run(tf.global_variables_initializer())
 
@@ -239,8 +240,14 @@ if __name__ == "__main__":
 
     time = datetime.datetime.now()
 
+    if not os.path.exists('./trained/'+NAME+'/data_csv/'):
+        os.makedirs('./trained/'+NAME+'/data_csv/')
+
+    if not os.path.exists('./trained/'+NAME+'/saved_model/'):
+        os.makedirs('./trained/'+NAME+'/saved_model/')
+
     # Salva em um csv todos os dados do treinamento (segurança pois estava com problema para usar o tensorboard)
-    with open (b"./trained/"+NAME+"/data_csv/"+NAME+".csv","w") as csv_file:
+    with open ("./trained/"+NAME+"/data_csv/"+NAME+".csv","w") as csv_file:
     #with open (b"./data_csv/breakout_dqn/breakout_dqn_padrao_2k.csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(['Date/Time Start',time])
