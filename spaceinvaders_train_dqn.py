@@ -10,7 +10,7 @@ from collections import deque
 from skimage.color import rgb2gray
 from skimage.transform import resize
 from keras.models import Sequential
-from keras.optimizers import RMSprop
+from keras.optimizers import RMSprop, Adam
 from keras.layers import Dense, Flatten
 from keras.layers.convolutional import Conv2D
 from keras import backend as K
@@ -120,7 +120,7 @@ class DQNAgent:
         linear_part = error - quadratic_part
         loss = K.mean(0.5 * K.square(quadratic_part) + linear_part)
 
-        optimizer = RMSprop(lr=LEARNING_RATE, epsilon=MIN_GRAD)
+        optimizer = Adam(lr=LEARNING_RATE, epsilon=MIN_GRAD)
         updates = optimizer.get_updates(self.model.trainable_weights, [], loss)
         train = K.function([self.model.input, a, y], [loss], updates=updates)
 
@@ -243,13 +243,13 @@ if __name__ == "__main__":
     frames=0
 
     time = datetime.datetime.now()
-	
+
     if not os.path.exists('./trained/'+NAME+'/data_csv/'):
         os.makedirs('./trained/'+NAME+'/data_csv/')
 
     if not os.path.exists('./trained/'+NAME+'/saved_model/'):
         os.makedirs('./trained/'+NAME+'/saved_model/')
-	
+
     # Salva em um csv todos os dados do treinamento (segurança pois estava com problema para usar o tensorboard)
     with open ("./trained/"+NAME+"/data_csv/"+NAME+".csv","w") as csv_file:
     #with open (b"./data_csv/spaceinvaders_dqn/spaceinvaders_dqn_padrao_2k.csv","w") as csv_file:

@@ -10,7 +10,7 @@ from collections import deque
 from skimage.color import rgb2gray
 from skimage.transform import resize
 from keras.models import Sequential
-from keras.optimizers import RMSprop
+from keras.optimizers import RMSprop, Adam
 from keras.layers import Dense, Flatten
 from keras.layers.convolutional import Conv2D
 from keras import backend as K
@@ -19,7 +19,7 @@ from keras import backend as K
 
 # Nome
 
-S_NAME = 'Padrao_1k'
+S_NAME = 'LR1-8'
 
 GAME = 'Pacman_'
 MODEL = '_DQN'
@@ -59,7 +59,7 @@ GAMMA = 0.99 # Valor do Discount factor
 NUM_REPLAY_MEMORY = 400000 # Número máximo de replay memory que o agente usa para trainamento
 NO_OP_STEPS = 30 # Número de ações de 'do nothing' possíveis para o agente no início do episódio
 
-LEARNING_RATE = 0.00025 # Learing rate usado pelo RMSProp (Não sei explicar)
+LEARNING_RATE = 0.00000001 # Learing rate usado pelo RMSProp (Não sei explicar)
 MIN_GRAD = 0.01  # Constant added to the squared gradient in the denominator of the RMSProp update
 
 #--------------------------------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ class DQNAgent:
         linear_part = error - quadratic_part
         loss = K.mean(0.5 * K.square(quadratic_part) + linear_part)
 
-        optimizer = RMSprop(lr=LEARNING_RATE, epsilon=MIN_GRAD)
+        optimizer = Adam(lr=LEARNING_RATE, epsilon=MIN_GRAD)
         updates = optimizer.get_updates(self.model.trainable_weights, [], loss)
         train = K.function([self.model.input, a, y], [loss], updates=updates)
 
@@ -249,7 +249,7 @@ if __name__ == "__main__":
 
     if not os.path.exists('./trained/'+NAME+'/saved_model/'):
         os.makedirs('./trained/'+NAME+'/saved_model/')
-    
+
     # Salva em um csv todos os dados do treinamento (segurança pois estava com problema para usar o tensorboard)
     with open ("./trained/"+NAME+"/data_csv/"+NAME+".csv","w") as csv_file:
     #with open (b"./data_csv/pacman_dqn/pacman_dqn_padrao_2k.csv","w") as csv_file:

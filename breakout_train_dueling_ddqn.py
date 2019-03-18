@@ -10,8 +10,9 @@ from collections import deque
 from skimage.color import rgb2gray
 from skimage.transform import resize
 from keras.models import Model # É necessário para fazer o dueling
-from keras.optimizers import RMSprop
-from keras.layers import Input, Dense, Flatten, Lambda, merge # É necessário importar mais bibliotecas para fazer o dueling na rede neural
+from keras.optimizers import RMSprop, Adam
+from keras.layers import Input, Dense, Flatten, Lambda, merge
+import keras.layers.merge # É necessário importar mais bibliotecas para fazer o dueling na rede neural
 from keras.layers.convolutional import Conv2D
 from keras import backend as K
 
@@ -155,10 +156,10 @@ class DueDDQNAgent:
 
         value_fc = Dense(512, activation='relu')(flatten)
         value =  Dense(1)(value_fc)
-        value = Lambda(lambda s: K.expand_dims(s[:, 0], -1),
-                       output_shape=(self.action_size,))(value)
+        value = Lambda(lambda s: K.expand_dims(s[:, 0], -1), output_shape=(self.action_size,))(value)
 
         # network merged and make Q Value
+        #merg = concatenate([value, advantage])
         q_value = merge([value, advantage], mode='sum')
         model = Model(inputs=input, outputs=q_value)
         model.summary()
@@ -266,7 +267,7 @@ if __name__ == "__main__":
 
     if not os.path.exists('./trained/'+NAME+'/saved_model/'):
         os.makedirs('./trained/'+NAME+'/saved_model/')
-    
+
     # Salva em um csv todos os dados do treinamento (segurança pois estava com problema para usar o tensorboard)
     with open ("./trained/"+NAME+"/data_csv/"+NAME+".csv","w") as csv_file:
     #with open (b"./data_csv/breakout_dueling_ddqn/breakout_dueling_ddqn_padrao_2k.csv","w") as csv_file:
