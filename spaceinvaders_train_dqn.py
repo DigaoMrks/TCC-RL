@@ -19,7 +19,7 @@ from keras import backend as K
 
 # Nome
 
-S_NAME = 'Padrao_1k'
+S_NAME = 'LR1-4'
 
 GAME = 'Spaceinvaders_'
 MODEL = '_DQN'
@@ -59,7 +59,7 @@ NUM_REPLAY_MEMORY = 400000 # Número máximo de replay memory que o agente usa p
 NO_OP_STEPS = 30 # Número de ações de 'do nothing' possíveis para o agente no início do episódio
 
 
-LEARNING_RATE = 0.00025 # Learing rate usado pelo RMSProp (Não sei explicar)
+LEARNING_RATE = 0.0001 # Learing rate usado pelo RMSProp (Não sei explicar)
 MIN_GRAD = 0.01  # Constant added to the squared gradient in the denominator of the RMSProp update
 
 #--------------------------------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ class DQNAgent:
 	#self.summary_writer = tf.summary.FileWriter('summary/spaceinvaders_dqn/spaceinvaders_dqn_padrao_2k', self.sess.graph)
         self.sess.run(tf.global_variables_initializer())
 
-	if self.load_model: self.model.load_weights("./trained/"+NAME+"/saved_model/"+NAME+".h5")
+        if self.load_model: self.model.load_weights("./trained/"+NAME+"/saved_model/"+NAME+".h5")
         #if self.load_model: self.model.load_weights("./saved_model/spaceinvaders_dqn/spaceinvaders_dqn_padrao_2k.h5")
 
 #--------------------------------------------------------------------------------------------------------
@@ -256,7 +256,7 @@ if __name__ == "__main__":
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(['EPISODES','BATCH_SIZE','GAMMA','NO_OP_STEPS','LEARNING_RATE','MIN_GRAD'])
         writer.writerow([EPISODES,BATCH_SIZE,GAMMA,NO_OP_STEPS,LEARNING_RATE,MIN_GRAD])
-	writer.writerow(['Date/Time Start',time])
+        writer.writerow(['Date/Time Start',time])
         writer.writerow(['Episode','Score','Mem Lenght','Epsilon','Global Step','Average_q','Average_Loss','Frames'])
 
         scores, episodes, global_step = [], [], 0
