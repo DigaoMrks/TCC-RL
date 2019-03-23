@@ -12,14 +12,37 @@ from keras import backend as K
 
 #--------------------------------------------------------------------------------------------------------
 
+# Nome
+
+S_NAME = 'LR6-4'
+
+GAME = 'Breakout_'
+MODEL = '_DQN'
+NAME = GAME+S_NAME+MODEL
+
+#-------------
+
 EPISODES = 50000
+
+#-------------
+
+# GAME SETTINGS
+ENV_NAME = 'BreakoutDeterministic-v4' # Nome do jogo
+ACTION = 4 # Quantidade de possíveis ações no jogo. 'do nothing', também é uma ação
+
+#------------------
+
+# Environment Settings
+FRAME_WIDTH = 84 # Número de pixels da largura
+FRAME_HEIGHT = 84 # Número de pixels da altura
+STATE_LENGTH = 4 # Número de frames 'juntos', nesse caso 4 frames reais é 1 frame para a rede
 
 #--------------------------------------------------------------------------------------------------------
 
 class TestAgent:
     def __init__(self, action_size):
-        self.state_size = (84, 84, 4)
-        self.action_size = action_size
+        self.state_size = (FRAME_WIDTH, FRAME_HEIGHT, STATE_LENGTH)
+        self.action_size = action_size # Número de ações possíveis no jogo, + 'do nothing' (Breakout = <, >, 'do nothing' = 3)
         self.no_op_steps = 20
 
         self.model = self.build_model()
@@ -30,10 +53,11 @@ class TestAgent:
         self.avg_q_max, self.avg_loss = 0, 0
         self.sess.run(tf.global_variables_initializer())
 
+#--------------------------------------------------------------------------------------------------------
+        
     def build_model(self):
         model = Sequential()
-        model.add(Conv2D(32, (8, 8), strides=(4, 4), activation='relu',
-                         input_shape=self.state_size))
+        model.add(Conv2D(32, (8, 8), strides=(4, 4), activation='relu',input_shape=self.state_size))
         model.add(Conv2D(64, (4, 4), strides=(2, 2), activation='relu'))
         model.add(Conv2D(64, (3, 3), strides=(1, 1), activation='relu'))
         model.add(Flatten())
@@ -42,6 +66,8 @@ class TestAgent:
         model.summary()
 
         return model
+    
+#--------------------------------------------------------------------------------------------------------
 
     def get_action(self, history):
         if np.random.random() < 0.01:
@@ -61,9 +87,10 @@ def pre_processing(observe):
 #--------------------------------------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    env = gym.make('BreakoutDeterministic-v4')
-    agent = TestAgent(action_size=4)
-    agent.load_model("./saved_model/breakout_dqn/breakout_dqn.h5")
+    env = gym.make(ENV_NAME)
+    agent = TestAgent(ACTION)
+    #agent.load_model("./saved_model/breakout_dqn/breakout_dqn.h5")
+    agent.load_model("./trained/"+NAME+"/saved_model/"+NAME+".h5")
 
     with open (b"./data_csv/breakout_dqn/breakout_dqn_play_game_data.csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
