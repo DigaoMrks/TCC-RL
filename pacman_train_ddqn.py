@@ -19,7 +19,7 @@ from keras import backend as K
 
 # Nome
 
-S_NAME = '5k_LR2.5-8'
+S_NAME = '10k_LR2.5-9'
 
 GAME = 'Pacman_'
 MODEL = '_DDQN'
@@ -52,14 +52,14 @@ EXPLORATION_STEPS = 1000000 # Número de passos que o valor inicial de epsilon �
 #------------------
 
 # Training Parameters
-EPISODES = 5001 #Número de episódios/epocas(epoch)
+EPISODES = 10001 #Número de episódios/epocas(epoch)
 BATCH_SIZE = 32 # Minimo Batch size
 TARGET_UPDATE_INTERVAL = 10000  # Frequência na qual a rede é atualizada
 GAMMA = 0.99 # Valor do Discount factor
 NUM_REPLAY_MEMORY = 400000 # Número máximo de replay memory que o agente usa para trainamento
 NO_OP_STEPS = 30 # Número de ações de 'do nothing' possíveis para o agente no início do episódio
 
-LEARNING_RATE = 0.000000025 # Learing rate usado pelo RMSProp (Não sei explicar)
+LEARNING_RATE = 0.0000000025 # Learing rate usado pelo RMSProp (Não sei explicar)
 MIN_GRAD = 0.01  # Constant added to the squared gradient in the denominator of the RMSProp update
 
 #--------------------------------------------------------------------------------------------------------

@@ -14,11 +14,13 @@ from keras import backend as K
 
 # Nome
 
-S_NAME = 'LR6-4'
+#S_NAME = 'LR6-4'
 
-GAME = 'Breakout_'
-MODEL = '_DQN'
-NAME = GAME+S_NAME+MODEL
+#GAME = 'Breakout_'
+#MODEL = '_DQN'
+#NAME = GAME+S_NAME+MODEL
+
+NAME=''
 
 #-------------
 
@@ -54,7 +56,7 @@ class TestAgent:
         self.sess.run(tf.global_variables_initializer())
 
 #--------------------------------------------------------------------------------------------------------
-        
+
     def build_model(self):
         model = Sequential()
         model.add(Conv2D(32, (8, 8), strides=(4, 4), activation='relu',input_shape=self.state_size))
@@ -66,7 +68,7 @@ class TestAgent:
         model.summary()
 
         return model
-    
+
 #--------------------------------------------------------------------------------------------------------
 
     def get_action(self, history):

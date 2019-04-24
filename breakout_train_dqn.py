@@ -19,7 +19,7 @@ from keras import backend as K
 
 # Nome
 
-S_NAME = '5k_LR2.5-4'
+S_NAME = '10k_LR2.5-4'
 
 GAME = 'Breakout_'
 MODEL = '_DQN'
@@ -52,7 +52,7 @@ EXPLORATION_STEPS = 1000000 # Número de passos que o valor inicial de epsilon �
 #------------------
 
 # Training Parameters
-EPISODES = 5001 #Número de episódios/epocas(epoch)
+EPISODES = 10001 #Número de episódios/epocas(epoch)
 BATCH_SIZE = 32 # Minimo Batch size
 TARGET_UPDATE_INTERVAL = 10000  # Frequência na qual a rede é atualizada
 GAMMA = 0.99 # Valor do Discount factor
