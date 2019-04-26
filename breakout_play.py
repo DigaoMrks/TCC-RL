@@ -20,11 +20,11 @@ from keras import backend as K
 #MODEL = '_DQN'
 #NAME = GAME+S_NAME+MODEL
 
-NAME=''
+NAME='Breakout_10k_LR6-4_DQN'
 
 #-------------
 
-EPISODES = 50000
+EPISODES = 100
 
 #-------------
 
