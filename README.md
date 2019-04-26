@@ -12,7 +12,7 @@ Orientador: Zenilton Kleber
 
 -----
 
-* Conteúdo do documento:
+#### Conteúdo do documento:
 
 - [Configuração](#configuração)
     - [Sistema Operacional](#sistema-operacional)
