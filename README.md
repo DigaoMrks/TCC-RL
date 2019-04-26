@@ -14,7 +14,12 @@ Orientador: Zenilton Kleber
 
 * Conteúdo do documento:
 
-- [CONF](#configuração)
+- [Configuração](#configuração)
+    - [Sistema Operacional](#sistema-operacional)
+    - [Hardware](#hardware)
+    - [Instalação](#instalação)
+-[Treinamento](#treinamento)
+-[Play](#play)
 
 
 -----
