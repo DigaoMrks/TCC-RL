@@ -11,7 +11,15 @@ Autor: Rodrigo Fonseca Marques
 Orientador: Zenilton Kleber
 
 -----
+
+* Conteúdo do documento:
+
+- [CONF](#configuração)
+
+
+-----
 ## CONFIGURAÇÃO
+
 
 ### Sistema operacional
 O sistema operacional usado foi o Ubuntu 16.04. 
@@ -75,3 +83,11 @@ Para fazer com que o modelo treinado seja capaz de jogar, é necessário executa
 `python3 breakout_play.py`
 
 -----
+
+
+
+- [x] Finish my changes
+- [ ] Push my commits to GitHub
+- [ ] Open a pull request
+
+:star:
