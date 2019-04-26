@@ -18,7 +18,9 @@ Orientador: Zenilton Kleber
     - [Sistema Operacional](#sistema-operacional)
     - [Hardware](#hardware)
     - [Instalação](#instalação)
+    
 -[Treinamento](#treinamento)
+
 -[Play](#play)
 
 
