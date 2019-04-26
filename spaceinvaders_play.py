@@ -12,7 +12,30 @@ from keras import backend as K
 
 #--------------------------------------------------------------------------------------------------------
 
-EPISODES = 50000
+# Nome
+
+#S_NAME = 'LR6-4'
+
+#GAME = 'Breakout_'
+#MODEL = '_DQN'
+#NAME = GAME+S_NAME+MODEL
+
+NAME='Spaceinvaders_10k_LR2.5-9_DQN'
+
+EPISODES = 100
+
+#-------------
+
+# GAME SETTINGS
+ENV_NAME = 'SpaceInvadersDeterministic-v4' # Nome do jogo
+ACTION = 6 # Quantidade de possíveis ações no jogo. 'do nothing', também é uma ação
+
+#------------------
+
+# Environment Settings
+FRAME_WIDTH = 84 # Número de pixels da largura
+FRAME_HEIGHT = 84 # Número de pixels da altura
+STATE_LENGTH = 4 # Número de frames 'juntos', nesse caso 4 frames reais é 1 frame para a rede
 
 #--------------------------------------------------------------------------------------------------------
 
@@ -30,6 +53,8 @@ class TestAgent:
         self.avg_q_max, self.avg_loss = 0, 0
         self.sess.run(tf.global_variables_initializer())
 
+#--------------------------------------------------------------------------------------------------------
+        
     def build_model(self):
         model = Sequential()
         model.add(Conv2D(32, (8, 8), strides=(4, 4), activation='relu', input_shape=self.state_size))
@@ -42,6 +67,8 @@ class TestAgent:
 
         return model
 
+#--------------------------------------------------------------------------------------------------------
+    
     def get_action(self, history):
         if np.random.random() < 0.01:
             return random.randrange(3)
@@ -60,10 +87,11 @@ def pre_processing(observe):
 #--------------------------------------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    env = gym.make('SpaceInvadersDeterministic-v4')
-    agent = TestAgent(action_size=6)
-    agent.load_model("./saved_model/spaceinvaders_dqn/spaceinvaders_dqn.h5")
-
+    env = gym.make(ENV_NAME)
+    agent = TestAgent(ACTION)
+    #agent.load_model("./saved_model/spaceinvaders_dqn/spaceinvaders_dqn.h5")
+    agent.load_model("./trained/"+NAME+"/saved_model/"+NAME+".h5")
+    
     with open (b"./data_csv/spaceinvaders_dqn/spaceinvaders_dqn_play_game_data.csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(["Episode:","Score:"])
