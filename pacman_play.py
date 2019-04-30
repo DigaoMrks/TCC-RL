@@ -20,7 +20,7 @@ from keras import backend as K
 #MODEL = '_DQN'
 #NAME = GAME+S_NAME+MODEL
 
-NAME='Pacman_10k_LR2.5-9_DQN'
+NAME='Pacman_10k_LR2.5-9_DuelingDDQN'
 
 EPISODES = 100
 
@@ -41,7 +41,7 @@ STATE_LENGTH = 4 # Número de frames 'juntos', nesse caso 4 frames reais é 1 fr
 
 class TestAgent:
     def __init__(self, action_size):
-        self.state_size = (RAME_WIDTH, FRAME_HEIGHT, STATE_LENGTH)
+        self.state_size = (FRAME_WIDTH, FRAME_HEIGHT, STATE_LENGTH)
         self.action_size = action_size
         self.no_op_steps = 20
 
@@ -54,11 +54,10 @@ class TestAgent:
         self.sess.run(tf.global_variables_initializer())
 
 #--------------------------------------------------------------------------------------------------------
-        
+
     def build_model(self):
         model = Sequential()
-        model.add(Conv2D(32, (8, 8), strides=(4, 4), activation='relu',
-                         input_shape=self.state_size))
+        model.add(Conv2D(32, (8, 8), strides=(4, 4), activation='relu',input_shape=self.state_size))
         model.add(Conv2D(64, (4, 4), strides=(2, 2), activation='relu'))
         model.add(Conv2D(64, (3, 3), strides=(1, 1), activation='relu'))
         model.add(Flatten())
@@ -69,7 +68,7 @@ class TestAgent:
         return model
 
 #--------------------------------------------------------------------------------------------------------
-    
+
     def get_action(self, history):
         if np.random.random() < 0.01:
             return random.randrange(3)
@@ -93,7 +92,7 @@ if __name__ == "__main__":
     #agent.load_model("./saved_model/breakout_dqn/breakout_dqn.h5")
     agent.load_model("./trained/"+NAME+"/saved_model/"+NAME+".h5")
 
-    with open (b"./data_csv/pacman_dqn/pacman_dqn_play_game_data.csv","w") as csv_file:
+    with open ("./play_data/pacman/"+NAME+".csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(["Episode:","Score:"])
 

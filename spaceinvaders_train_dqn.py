@@ -19,7 +19,7 @@ from keras import backend as K
 
 # Nome
 
-S_NAME = '10k_LR2.5-9'
+S_NAME = '10k_LR2.5-4'
 
 GAME = 'Spaceinvaders_'
 MODEL = '_DQN'
@@ -59,7 +59,7 @@ NUM_REPLAY_MEMORY = 400000 # Número máximo de replay memory que o agente usa p
 NO_OP_STEPS = 30 # Número de ações de 'do nothing' possíveis para o agente no início do episódio
 
 
-LEARNING_RATE = 0.0000000025 # Learing rate usado pelo RMSProp (Não sei explicar)
+LEARNING_RATE = 0.00025 # Learing rate usado pelo RMSProp (Não sei explicar)
 MIN_GRAD = 0.01  # Constant added to the squared gradient in the denominator of the RMSProp update
 
 #--------------------------------------------------------------------------------------------------------

@@ -22,8 +22,6 @@ from keras import backend as K
 
 NAME='Breakout_10k_LR6-4_DQN'
 
-#-------------
-
 EPISODES = 100
 
 #-------------
