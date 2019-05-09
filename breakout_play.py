@@ -20,7 +20,7 @@ from keras import backend as K
 #MODEL = '_DQN'
 #NAME = GAME+S_NAME+MODEL
 
-NAME='Breakout_10k_LR6-4_DQN'
+NAME='Breakout_10k_LR2.5-4_DDQN'
 
 EPISODES = 100
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     #agent.load_model("./saved_model/breakout_dqn/breakout_dqn.h5")
     agent.load_model("./trained/"+NAME+"/saved_model/"+NAME+".h5")
 
-    with open (b"./data_csv/breakout_dqn/breakout_dqn_play_game_data.csv","w") as csv_file:
+    with open ("./play_data/breakout/"+NAME+".csv","w") as csv_file:
         writer = csv.writer(csv_file,delimiter=',')
         writer.writerow(["Episode:","Score:"])
 

@@ -32,7 +32,7 @@ ENV_NAME = 'SpaceInvadersDeterministic-v4' # Nome do jogo
 ACTION = 6 # Quantidade de possíveis ações no jogo. 'do nothing', também é uma ação
                 #Segundo a biblioteca GYM: https://github.com/openai/gym/wiki/Table-of-environments
 RENDER = False # Renderizar ou não o treinamento
-LOAD_SAVED_MODEL = False # Load no modelo já treinado para continuar o treinamento
+LOAD_SAVED_MODEL = True # Load no modelo já treinado para continuar o treinamento
 
 #------------------
 
@@ -59,7 +59,7 @@ NUM_REPLAY_MEMORY = 400000 # Número máximo de replay memory que o agente usa p
 NO_OP_STEPS = 30 # Número de ações de 'do nothing' possíveis para o agente no início do episódio
 
 
-LEARNING_RATE = 0.00025 # Learing rate usado pelo RMSProp (Não sei explicar)
+LEARNING_RATE = 0.0000000025 # Learing rate usado pelo RMSProp (Não sei explicar)
 MIN_GRAD = 0.01  # Constant added to the squared gradient in the denominator of the RMSProp update
 
 #--------------------------------------------------------------------------------------------------------

@@ -27,7 +27,7 @@ EPISODES = 100
 #-------------
 
 # GAME SETTINGS
-ENV_NAME = 'MsPacmanDeterministic-v4' # Nome do jogo
+ENV_NAME = 'BreakoutDeterministic-v4' # Nome do jogo
 ACTION = 4 # Quantidade de possíveis ações no jogo. 'do nothing', também é uma ação
 
 #------------------
