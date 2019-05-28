@@ -20,7 +20,7 @@ from keras import backend as K
 #MODEL = '_DQN'
 #NAME = GAME+S_NAME+MODEL
 
-NAME='Pacman_10k_LR2.5-9_DuelingDDQN'
+NAME='Pacman_10k_LR_Padrao_DuelingDDQN'
 
 EPISODES = 100
 

@@ -20,7 +20,7 @@ from keras import backend as K
 #MODEL = '_DQN'
 #NAME = GAME+S_NAME+MODEL
 
-NAME='Spaceinvaders_10k_LR5-9_DuelingDDQN'
+NAME='Spaceinvaders_10k_LR_Padrao_DuelingDDQN'
 
 EPISODES = 100
 
