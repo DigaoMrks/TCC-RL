@@ -87,12 +87,31 @@ Para fazer com que o modelo treinado seja capaz de jogar, é necessário executa
 
 `python3 breakout_play.py`
 
+Os vídeos de todos os testes estão disponíveis nos links abaixo:
+
+TCC-RL - Testes Primeiro Treinamento Completo:
+https://www.youtube.com/watch?v=YVQapdviUns
+
+TCC-RL - Testes Segundo Treinamento Completo
+https://www.youtube.com/watch?v=f84J5sXMJ5g
+
+
+Os vídeos abaixo são para apresentação, contendo apenas 1 min de vídeo cada.
+
+TCC-RL - Primeiro Treinamento (Apresentação)
+https://www.youtube.com/watch?v=-jYahasQvLk
+
+TCC-RL - Segundo Treinamento (Apresentação)
+https://www.youtube.com/watch?v=NsGBMu3XjaU
+
 -----
 
 
 
-- [x] Finish my changes
-- [ ] Push my commits to GitHub
-- [ ] Open a pull request
+
+
+- [x] Conclusão do trabalho
+- [ ] Ajustes no git
+- [ ] Apresentação
 
 :star:
